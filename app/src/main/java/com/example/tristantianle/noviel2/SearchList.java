@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class SearchList extends AppCompatActivity {
+    String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,10 @@ public class SearchList extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+    }
 
+    public String getMyData() {
+        return message;
     }
 }
