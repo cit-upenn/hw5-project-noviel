@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tristantianle.noviel2">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,11 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".SearchList"></activity>-->
+        <!-- <activity android:name=".SearchList"></activity> -->
         <activity
             android:name=".SearchList"
             android:label="SearchList"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".DetailActivity"
+            android:label="DetailActivity"
+            android:parentActivityName=".SearchList">
         </activity>
     </application>
 
