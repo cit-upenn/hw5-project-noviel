@@ -37,6 +37,7 @@ import java.util.List;
 public class SearchFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
+    JSONObject bookJson;
 
     public SearchFragment() {
     }
@@ -108,9 +109,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String forecast = mForecastAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, forecast);
+//                String forecast = mForecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailFragment.class)
+                        .putExtra(Intent.EXTRA_TEXT, bookJson.toString());
                 startActivity(intent);
             }
         });
@@ -161,12 +162,14 @@ public class SearchFragment extends Fragment {
 //            final String OWM_MIN = "min";
 //            final String OWM_DESCRIPTION = "main";
 
-            JSONObject bookJson = new JSONObject(titleJsonStr);
-            final int NUM_RESULTS = bookJson.getInt("num_results");
+            bookJson = new JSONObject(titleJsonStr);
+            int numResults = bookJson.getInt("num_results");
             JSONArray bookTitleArray = bookJson.getJSONArray(RESULTS);
-
-            String[] resultStrs = new String[NUM_RESULTS];
-            for (int i=0;i<NUM_RESULTS;i++) {
+            if (numResults > 20) {
+                numResults = 20;
+            }
+            String[] resultStrs = new String[numResults];
+            for (int i=0;i<numResults;i++) {
                 resultStrs[i] = bookTitleArray.getJSONObject(i).getString(TITLE) + "\nBy ";
                 resultStrs[i] += bookTitleArray.getJSONObject(i).getString(AUTHOR);
             }
