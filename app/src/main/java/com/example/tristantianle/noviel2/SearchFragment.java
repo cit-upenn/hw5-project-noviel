@@ -67,7 +67,7 @@ public class SearchFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
 //        int id = item.getItemId();
 //        if (id == R.id.action_refresh) {
-//            FetchWeatherTask weatherTask = new FetchWeatherTask();
+//            DataProcessing weatherTask = new DataProcessing();
 //            weatherTask.execute("94043");
 //            return true;
 //        }
@@ -109,9 +109,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                String forecast = mForecastAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailFragment.class)
-                        .putExtra(Intent.EXTRA_TEXT, bookJson.toString());
+
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra("pos", position);
                 startActivity(intent);
             }
         });
