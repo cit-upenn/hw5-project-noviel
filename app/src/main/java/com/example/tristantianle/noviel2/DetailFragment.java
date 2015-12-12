@@ -1,6 +1,5 @@
 package com.example.tristantianle.noviel2;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,8 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class DetailFragment extends Fragment {
 
@@ -29,50 +29,43 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DetailActivity activity = (DetailActivity) getActivity();
-        String message = activity.getStringData();
+//        String message = activity.getStringData();
         String position = Integer.toString(activity.getIntData());
-        DataProcessing dp = new DataProcessing();
+        DataProcessing2 dp = new DataProcessing2();
         dp.execute(position);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
-    public class DataProcessing extends AsyncTask<String, Void, String[]> {
+    public class DataProcessing2 extends AsyncTask<String, Void, HashMap<String,String>> {
 
-        private final String LOG_TAG = DataProcessing.class.getSimpleName();
-        private String[] getBookDataFromJson(String titleJsonStr)
-                throws JSONException {
+        private final String LOG_TAG = DataProcessing2.class.getSimpleName();
+
+        private HashMap<String,String> getBookDataFromJson(JSONObject titleJsonStr) throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
-            final String RESULTS = "results";
             final String TITLE = "title";
             final String AUTHOR = "author";
-//            final String OWM_MIN = "min";
-//            final String OWM_DESCRIPTION = "main";
+            final String DESC = "description";
 
-            bookJson = new JSONObject(titleJsonStr);
-            int numResults = bookJson.getInt("num_results");
-            JSONArray bookTitleArray = bookJson.getJSONArray(RESULTS);
-            if (numResults > 20) {
-                numResults = 20;
-            }
-            String[] resultStrs = new String[numResults];
-            for (int i=0;i<numResults;i++) {
-                resultStrs[i] = bookTitleArray.getJSONObject(i).getString(TITLE) + "\nBy ";
-                resultStrs[i] += bookTitleArray.getJSONObject(i).getString(AUTHOR);
-            }
+            JSONObject bookJson = titleJsonStr;
+            String title = bookJson.getString(TITLE);
+            String author = bookJson.getString(AUTHOR);
+            String desc = bookJson.getString(DESC);
+            HashMap<String, String> results = new HashMap<String,String>();
+            results.put(TITLE,title);
+            results.put(AUTHOR,author);
+            results.put(DESC,desc);
 
-            return resultStrs;
+            return results;
 
         }
         @Override
-        protected String[] doInBackground(String... params) {
+        protected HashMap<String,String> doInBackground(String... params) {
 
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
@@ -87,24 +80,15 @@ public class DetailFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String titleJsonStr = null;
 
-//            String format = "json";
-//            String units = "metric";
-//            int numDays = 7;
-
             try {
-                final String NYTIMES_BASE_URL = "http://api.nytimes.com/svc/books/v2/lists/best-sellers/history.json?";
-                final String TITLE_PARAM = "title";
-                final String APPKEY_PARAM = "api-key";
 
-                Uri builtUri = Uri.parse(NYTIMES_BASE_URL).buildUpon()
-                        .appendQueryParameter(TITLE_PARAM, params[0])
-                        .appendQueryParameter(APPKEY_PARAM, "de340fc0244bbb1503a07c665b9903dc:15:65808863")
-                        .build();
+                DetailActivity activity = (DetailActivity) getActivity();
+                String message = activity.getStringData();
+                Log.d(LOG_TAG, "url =" + message);
 
-                URL url = new URL(builtUri.toString());
+                URL url = new URL(message);
 
                 // print out the query in debug mode
-                Log.d(LOG_TAG, "url =" + builtUri);
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -153,7 +137,10 @@ public class DetailFragment extends Fragment {
             }
 
             try {
-                return getBookDataFromJson(titleJsonStr);
+                JSONObject jo = new JSONObject(titleJsonStr);
+                jo = jo.getJSONArray("results").getJSONObject(Integer.parseInt(params[0]));
+                Log.d(LOG_TAG, "results at pos " + jo.toString());
+                return getBookDataFromJson(jo);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
@@ -164,12 +151,15 @@ public class DetailFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(HashMap<String,String> result) {
             if (result != null) {
-                mForecastAdapter.clear();
-                for(String bookTitleStr : result) {
-                    mForecastAdapter.add(bookTitleStr);
-                }
+                TextView titleBlock = (TextView) getActivity().findViewById(R.id.book_title);
+                titleBlock.append(result.get("title"));
+                TextView authorBlock = (TextView) getActivity().findViewById(R.id.book_author);
+                authorBlock.append("By " + result.get("author"));
+                TextView descBlock = (TextView) getActivity().findViewById(R.id.book_description);
+                descBlock.append("Description: " + result.get("description"));
+//                Log.d(LOG_TAG, "onPostExecute: " + result.get("title"));
             }
         }
     }

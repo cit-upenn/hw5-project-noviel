@@ -35,9 +35,13 @@ import java.util.List;
  */
 
 public class SearchFragment extends Fragment {
-
+    private String url;
     private ArrayAdapter<String> mForecastAdapter;
     JSONObject bookJson;
+    FetchWeatherTask weatherTask;
+
+    private final String LOG_TAG = SearchFragment.class.getSimpleName();
+
 
     public SearchFragment() {
     }
@@ -48,10 +52,26 @@ public class SearchFragment extends Fragment {
         // Add this line in order for this fragment to handle menu events.
 
         setHasOptionsMenu(true);
-        FetchWeatherTask weatherTask = new FetchWeatherTask();
-        SearchList activity = (SearchList) getActivity();
-        String message = activity.getMyData();
+        weatherTask = new FetchWeatherTask();
+//        SearchList activity = (SearchList) getActivity();
+//        String message = activity.getMyData();
+        String message = "Harry Potter";
         weatherTask.execute(message);
+        url = weatherTask.getURL();
+        Log.d(LOG_TAG, "return url: " + url);
+        mForecastAdapter =
+                new ArrayAdapter<String>(
+                        getActivity(), // The current context (this activity)
+                        R.layout.list_item_result, // The name of the layout ID.
+                        R.id.list_item_forecast_textview, // The ID of the textview to populate.
+                        weekForecast);
+
+        View rootView = inflater.inflate(R.layout.fragment_search_list, container, false);
+
+        // Get a reference to the ListView, and attach this adapter to it.
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listView.setAdapter(mForecastAdapter);
+
     }
 
     @Override
@@ -62,21 +82,14 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
-//            DataProcessing weatherTask = new DataProcessing();
-//            weatherTask.execute("94043");
-//            return true;
-//        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         String[] data = {
@@ -109,10 +122,15 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
+//                String urlStr = url;
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra("pos", position);
+                        .putExtra(Intent.EXTRA_TEXT, url);
+                Log.d(LOG_TAG, "Pass in url: " + url);
                 startActivity(intent);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class)
+//                        .putExtra(Intent.EXTRA_POS, position);
+//                intent.putExtra(Intent.EXTRA_URL, url);
+//                startActivity(intent);
             }
         });
 
@@ -120,38 +138,15 @@ public class SearchFragment extends Fragment {
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
-
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
-        /* The date/time conversion code is going to be moved outside the asynctask later,
-         * so for convenience we're breaking it out into its own method now.
-         */
-//        private String getReadableDateString(long time){
-//            // Because the API returns a unix timestamp (measured in seconds),
-//            // it must be converted to milliseconds in order to be converted to valid date.
-//            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
-//            return shortenedDateFormat.format(time);
-//        }
+        public URL url;
 
-        /**
-         * Prepare the weather high/lows for presentation.
-         */
-//        private String formatHighLows(double high, double low) {
-//            // For presentation, assume the user doesn't care about tenths of a degree.
-//            long roundedHigh = Math.round(high);
-//            long roundedLow = Math.round(low);
-//
-//            String highLowStr = roundedHigh + "/" + roundedLow;
-//            return highLowStr;
-//        }
+        public String getURL() {
+            Log.d(LOG_TAG, "getURL: "+ url);
+            return url.toString();
+        }
 
-        /**
-         * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
-         *
-         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-         * into an Object hierarchy for us.
-         */
         private String[] getBookDataFromJson(String titleJsonStr)
                 throws JSONException {
 
@@ -173,48 +168,6 @@ public class SearchFragment extends Fragment {
                 resultStrs[i] = bookTitleArray.getJSONObject(i).getString(TITLE) + "\nBy ";
                 resultStrs[i] += bookTitleArray.getJSONObject(i).getString(AUTHOR);
             }
-
-//            Time dayTime = new Time();
-//            dayTime.setToNow();
-//
-//            // we start at the day returned by local time. Otherwise this is a mess.
-//            int julianStartDay = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
-//
-//            // now we work exclusively in UTC
-//            dayTime = new Time();
-
-
-//            String[] resultStrs = new String[numDays];
-//            for(int i = 0; i < weatherArray.length(); i++) {
-//                // For now, using the format "Day, description, hi/low"
-//                String day;
-//                String description;
-//                String highAndLow;
-//
-//                // Get the JSON object representing the day
-//                JSONObject dayForecast = weatherArray.getJSONObject(i);
-
-                // The date/time is returned as a long.  We need to convert that
-                // into something human-readable, since most people won't read "1400356800" as
-                // "this saturday".
-//                long dateTime;
-//                // Cheating to convert this to UTC time, which is what we want anyhow
-//                dateTime = dayTime.setJulianDay(julianStartDay+i);
-//                day = getReadableDateString(dateTime);
-
-//                // description is in a child array called "weather", which is 1 element long.
-//                JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-//                description = weatherObject.getString(OWM_DESCRIPTION);
-//
-//                // Temperatures are in a child object called "temp".  Try not to name variables
-//                // "temp" when working with temperature.  It confuses everybody.
-//                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-//                double high = temperatureObject.getDouble(OWM_MAX);
-//                double low = temperatureObject.getDouble(OWM_MIN);
-//
-//                highAndLow = formatHighLows(high, low);
-//                resultStrs[i] = day + " - " + description + " - " + highAndLow;
-//            }
             return resultStrs;
 
         }
@@ -234,9 +187,6 @@ public class SearchFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String titleJsonStr = null;
 
-//            String format = "json";
-//            String units = "metric";
-//            int numDays = 7;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -267,10 +217,10 @@ public class SearchFragment extends Fragment {
                         .appendQueryParameter(APPKEY_PARAM, "de340fc0244bbb1503a07c665b9903dc:15:65808863")
                         .build();
 
-                URL url = new URL(builtUri.toString());
+                url = new URL(builtUri.toString());
 
                 // print out the query in debug mode
-                Log.d(LOG_TAG, "url =" + builtUri);
+                Log.d(LOG_TAG, "url =" + url);
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -337,6 +287,7 @@ public class SearchFragment extends Fragment {
                     mForecastAdapter.add(bookTitleStr);
                 }
             }
+
         }
     }
 }
