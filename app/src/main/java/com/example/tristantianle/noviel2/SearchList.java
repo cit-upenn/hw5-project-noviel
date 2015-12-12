@@ -20,9 +20,10 @@ public class SearchList extends AppCompatActivity implements AsyncResponse {
     private JSONObject bookJson;
     ListView listview;
     private DataProcessing dp;
+    private AuthorProcessing dp1;
     private static Context myContext;
     String[] result;
-
+    private int getCount;
 
     private final String LOG_TAG = SearchList.class.getSimpleName();
 
@@ -33,13 +34,30 @@ public class SearchList extends AppCompatActivity implements AsyncResponse {
         myContext = this;
         listview = (ListView) findViewById(R.id.listview_forecast);
 //        setHasOptionsMenu(true);
-        dp = new DataProcessing(myContext,listview);
-        dp.delegate = this;
-
         Intent intent = getIntent();
-        message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-//        String message = "Harry Potter";
-        dp.execute(message);
+        getCount = intent.getIntExtra("count", 0);
+
+        if (getCount == 1){
+            dp = new DataProcessing(myContext, listview);
+            dp.delegate = this;
+            message = intent.getStringExtra("titleKey");
+
+            //        String message = "Harry Potter";
+
+            dp.execute(message);
+
+        }
+        if (getCount == 2){
+            dp1 = new AuthorProcessing(myContext, listview);
+            dp1.delegate = this;
+
+            message = intent.getStringExtra("authorKey");
+
+            //        String message = "Harry Potter";
+
+            dp1.execute(message);
+
+        }
         listview.setAdapter(mForecastAdapter);
         clickList();
     }
@@ -83,7 +101,12 @@ public class SearchList extends AppCompatActivity implements AsyncResponse {
                 R.id.list_item_forecast_textview, // The ID of the textview to populate.
                 result);
         listview.setAdapter(mForecastAdapter);
-        url = dp.getURL();
+        if (getCount == 1){
+            url = dp.getURL();
+        }
+        if (getCount == 2){
+            url = dp1.getURL();
+        }
 
 //        Log.d(LOG_TAG, "processFinish: " + output[0]);
     }

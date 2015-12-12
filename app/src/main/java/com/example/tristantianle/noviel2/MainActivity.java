@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "com.example.tristantianle.noviel.MESSAGE";
+//    public final static String EXTRA_MESSAGE = "com.example.tristantianle.noviel.MESSAGE";
+
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,11 +17,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void sendMessage(View view) {
+    public void sendTitle(View view) {
+        count =1;
         Intent intent = new Intent(this, SearchList.class);
         EditText editText = (EditText) findViewById(R.id.title_search);
         String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra("titleKey", message);
+        intent.putExtra("count", count);
+        startActivity(intent);
+    }
+
+    public void sendAuthor(View view) {
+        count = 2;
+        Intent intent = new Intent(this, SearchList.class);
+        EditText editText = (EditText) findViewById(R.id.author_search);
+        String message = editText.getText().toString();
+        intent.putExtra("authorKey", message);
+        intent.putExtra("count",count);
         startActivity(intent);
     }
 }
