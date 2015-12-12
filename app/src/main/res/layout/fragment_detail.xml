@@ -5,23 +5,295 @@
     android:orientation="vertical"
     tools:context="com.example.tristantianle.noviel2.app.DetailActivity$DetailFragment">
 
-    <TextView
-        android:id="@+id/book_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="10pt"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/book_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="8pt"/>
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/book_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="9pt"/>
+            <TextView
+                android:id="@+id/book_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/book_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+
+            <TextView
+                android:id="@+id/movie_title0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+            <TextView
+                android:id="@+id/movie_title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+            <TextView
+                android:id="@+id/movie_title8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_title9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/movie_date9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="8pt"/>
+
+            <TextView
+                android:id="@+id/movie_rate9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+            <TextView
+                android:id="@+id/movie_overview9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"/>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

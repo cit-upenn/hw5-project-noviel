@@ -40,22 +40,6 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
         this.listview = listview;
     }
 
-
-//    public void onPreExecute() {
-//        mForecastAdapter = new ArrayAdapter<String>(
-//                        SearchList.getContext(), // The current context (this activity)
-//                        R.layout.list_item_result, // The name of the layout ID.
-//                        R.id.list_item_forecast_textview, // The ID of the textview to populate.
-//                        weekForecast);
-//        // Get a reference to the ListView, and attach this adapter to it.
-//        LayoutInflater inflater = (LayoutInflater) SearchList.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = inflater.inflate(R.layout.activity_search_list, null);
-//        ListView listView = (ListView) v.findViewById(R.id.listview_forecast);
-//        listView.setAdapter(mForecastAdapter);
-//    }
-
-
-
     private String[] getBookDataFromJson(String titleJsonStr)
             throws JSONException {
 
@@ -63,8 +47,6 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
         final String RESULTS = "results";
         final String TITLE = "title";
         final String AUTHOR = "author";
-//            final String OWM_MIN = "min";
-//            final String OWM_DESCRIPTION = "main";
 
         bookJson = new JSONObject(titleJsonStr);
         int numResults = bookJson.getInt("num_results");
