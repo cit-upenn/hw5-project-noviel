@@ -256,6 +256,7 @@ public class DetailFragment extends Fragment {
                     count = 10;
                 }
                 Log.d(LOG_TAG, "onPostExecute: " + count);
+                // use a loop to print out all the movie info
                 for (int i=0;i<count;i++) {
                     String mt = "movie_title"+i;
                     String md = "movie_date"+i;

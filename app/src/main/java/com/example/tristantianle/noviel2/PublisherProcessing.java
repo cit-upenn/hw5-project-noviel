@@ -19,12 +19,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ZiyuChen on 12/11/15.
+ * Created by ZiyuChen on 12/14/15.
  */
-public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
-    private final String LOG_TAG = DataProcessing.class.getSimpleName();
+
+public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
+    private final String LOG_TAG = PublisherProcessing.class.getSimpleName();
     private JSONObject bookJson;
     private ArrayAdapter<String> mForecastAdapter;
+
     public URL url;
     private Context myContext;
     private ListView listview;
@@ -34,7 +36,7 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
         Log.d(LOG_TAG, "getURL: " + url);
         return url.toString();
     }
-    public AuthorProcessing(Context context,ListView listview){
+    public PublisherProcessing(Context context,ListView listview){
         this.myContext = context;
         this.listview = listview;
     }
@@ -48,7 +50,8 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
         final String RESULTS = "results";
         final String TITLE = "title";
         final String AUTHOR = "author";
-
+//            final String OWM_MIN = "min";
+//            final String OWM_DESCRIPTION = "main";
 
         bookJson = new JSONObject(titleJsonStr);
         int numResults = bookJson.getInt("num_results");
@@ -83,7 +86,7 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
 
         try {
             final String NYTIMES_BASE_URL = "http://api.nytimes.com/svc/books/v2/lists/best-sellers/history.json?";
-            final String TITLE_PARAM = "author";
+            final String TITLE_PARAM = "publisher";
             final String APPKEY_PARAM = "api-key";
 
             Uri builtUri = Uri.parse(NYTIMES_BASE_URL).buildUpon()
@@ -167,3 +170,4 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
 
     }
 }
+

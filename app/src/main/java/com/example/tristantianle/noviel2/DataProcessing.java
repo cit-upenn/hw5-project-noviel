@@ -159,13 +159,7 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
                     R.layout.list_item_result, // The name of the layout ID.
                     R.id.list_item_forecast_textview, // The ID of the textview to populate.
                     result);
-//            mForecastAdapter.clear();
-//            for(String bookTitleStr : result) {
-//                Log.d(LOG_TAG, "onPostExecute: " + bookTitleStr);
-//                mForecastAdapter.add(bookTitleStr);
-//            }
 
-//            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
             listview.setAdapter(mForecastAdapter);
         }
 
