@@ -1,0 +1,13 @@
+Summary
+
+Name: Noviel (Meaning: Novel + Movie)
+
+Description: Noviel is an Android application that can be used to search for New York Times best seller books by title, author or publisher. After searching and picking the targeting book, the user will arrive at the final page which would deliever the information of the book and top 10 movies that are related. The information of the movies are obtained from TMDB (the Movie Database), with the overview, rating, title and release date available to the user. 
+
+Work break down:
+Tianle Yang: Structure design of the app, setup data processing on the background thread, book title and movie API parsing.
+Ziyu Chen: Book author and publisher search API and Json parsing, information extraction.
+
+Github link: https://github.com/cit-upenn/hw5-project-noviel.git
+
+Note: Testing is very complicated in android. One of the test cases is under src->androidTest->java->com.example.tristantianle.noviel2->ApplicationTest1. Since all of our data processing is under the hood on the back stage. It is very advanced to be able to test something on the background. We have been working more than 6 hours on it and see no optimal solution to it.

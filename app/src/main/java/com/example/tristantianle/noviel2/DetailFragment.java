@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,16 +20,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * This class controls the fragment detail view
+ */
 public class DetailFragment extends Fragment {
-    String title;
-    HashMap<String, String> results;
-    int count;
-    String movieTitle = "original_title";
-    String movieDate = "release_date";
-    String movieOverview = "overview";
-    String moviePoster = "poster_path";
-    String movieRating = "vote_average";
+    private String title;
+    private HashMap<String, String> results;
+    private int count;
+    private String movieTitle = "original_title";
+    private String movieDate = "release_date";
+    private String movieOverview = "overview";
+    private String moviePoster = "poster_path";
+    private String movieRating = "vote_average";
 
+    /**
+     * constructor
+     */
     public DetailFragment() {
     }
 
@@ -50,10 +54,12 @@ public class DetailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
+    /**
+     * This class extracts data from the selected book
+     * Also parse related movie info from the TMDB
+     */
     public class DataProcessing2 extends AsyncTask<String, Void, HashMap<String,String>> {
-
         private final String LOG_TAG = DataProcessing2.class.getSimpleName();
-
         private void getBookDataFromJson(JSONObject titleJsonStr) throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
@@ -69,11 +75,14 @@ public class DetailFragment extends Fragment {
             results.put(TITLE,title);
             results.put(AUTHOR,author);
             results.put(DESC,desc);
-
-//            return results;
-
         }
 
+        /**
+         * This method parse the json data from TMDB database api query
+         * @param movieArr json array from the "result" label
+         * @param count number of results
+         * @throws JSONException
+         */
         private void getMovieDataFromJson(JSONArray movieArr, int count) throws JSONException {
             if (count>10) {
                 count = 10;
@@ -83,6 +92,8 @@ public class DetailFragment extends Fragment {
             movieOverview = "overview";
             moviePoster = "poster_path";
             movieRating = "vote_average";
+
+            // put all the info into the result hashmap
             for (int i=0;i<count;i++) {
                 JSONObject mo = movieArr.getJSONObject(i);
                 results.put(movieTitle+i,mo.getString(movieTitle));
@@ -91,14 +102,13 @@ public class DetailFragment extends Fragment {
                 results.put(moviePoster+i,mo.getString(moviePoster));
                 results.put(movieRating+i,mo.getString(movieRating));
             }
-
         }
+
         @Override
         protected HashMap<String,String> doInBackground(String... params) {
             if (params.length == 0) {
                 return null;
             }
-
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String titleJsonStr = null;
@@ -148,10 +158,7 @@ public class DetailFragment extends Fragment {
             try {
                 JSONObject jo = new JSONObject(titleJsonStr);
                 jo = jo.getJSONArray("results").getJSONObject(Integer.parseInt(params[0]));
-//                Log.d(LOG_TAG, "results at pos " + jo.toString());
-                // need to change this!!
                 getBookDataFromJson(jo);
-//                return ;
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
@@ -238,9 +245,10 @@ public class DetailFragment extends Fragment {
 
         @Override
         protected void onPostExecute(HashMap<String,String> result) {
-            for (String re:result.keySet()) {
-                Log.d(LOG_TAG, "hashmap: " + re);
-            }
+            // print all the hashmaps
+//            for (String re:result.keySet()) {
+//                Log.d(LOG_TAG, "hashmap: " + re);
+//            }
             if (result != null) {
                 TextView titleBlock = (TextView) getActivity().findViewById(R.id.book_title);
                 titleBlock.append(result.get("title"));
@@ -252,10 +260,11 @@ public class DetailFragment extends Fragment {
             Log.d(LOG_TAG, "onPostExecute: " + count);
 
             if (count!=0) {
+                // if found more than 10 movies related, only show the top 10
                 if (count>10) {
                     count = 10;
                 }
-                Log.d(LOG_TAG, "onPostExecute: " + count);
+//                Log.d(LOG_TAG, "onPostExecute: " + count);
                 // use a loop to print out all the movie info
                 for (int i=0;i<count;i++) {
                     String mt = "movie_title"+i;

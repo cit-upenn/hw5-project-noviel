@@ -33,6 +33,7 @@
                 android:id="@+id/book_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
 
@@ -60,6 +61,7 @@
                 android:id="@+id/movie_overview0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -86,6 +88,7 @@
                 android:id="@+id/movie_overview1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -112,7 +115,9 @@
                 android:id="@+id/movie_overview2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
+
             <TextView
                 android:id="@+id/movie_title3"
                 android:layout_width="wrap_content"
@@ -163,6 +168,7 @@
                 android:id="@+id/movie_overview4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -189,6 +195,7 @@
                 android:id="@+id/movie_overview5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -215,6 +222,7 @@
                 android:id="@+id/movie_overview6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -241,6 +249,7 @@
                 android:id="@+id/movie_overview7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
             <TextView
                 android:id="@+id/movie_title8"
@@ -266,6 +275,7 @@
                 android:id="@+id/movie_overview8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
             <TextView
@@ -292,6 +302,7 @@
                 android:id="@+id/movie_overview9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:textSize="9pt"/>
 
         </LinearLayout>

@@ -1,16 +1,13 @@
 package com.example.tristantianle.noviel2;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,27 +16,32 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ZiyuChen on 12/11/15.
+ * This class processes the author search in the background
  */
 public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = DataProcessing.class.getSimpleName();
     private JSONObject bookJson;
-    private ArrayAdapter<String> mForecastAdapter;
+    private ArrayAdapter<String> resultAdapter;
     public URL url;
-    private Context myContext;
     private ListView listview;
     public AsyncResponse delegate = null;
 
+    /**
+     * Constructor of the class
+     * @param listview from the main thread
+     */
+    public AuthorProcessing(ListView listview){
+        this.listview = listview;
+    }
+
+    /**
+     * Method that passes the final url from background thread to main thread
+     * @return url built from user input that queries the author
+     */
     public String getURL() {
         Log.d(LOG_TAG, "getURL: " + url);
         return url.toString();
     }
-    public AuthorProcessing(Context context,ListView listview){
-        this.myContext = context;
-        this.listview = listview;
-    }
-
-
 
     private String[] getBookDataFromJson(String titleJsonStr)
             throws JSONException {
@@ -146,7 +148,6 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
     }
@@ -156,13 +157,13 @@ public class AuthorProcessing extends AsyncTask<String, Void, String[]> {
         delegate.processFinish(result);
 
         if (result != null) {
-            mForecastAdapter = new ArrayAdapter<String>(
-                    SearchList.getContext(), // The current context (this activity)
-                    R.layout.list_item_result, // The name of the layout ID.
-                    R.id.list_item_forecast_textview, // The ID of the textview to populate.
+            resultAdapter = new ArrayAdapter<String>(
+                    SearchList.getContext(),             // The current context (this activity)
+                    R.layout.list_item_result,           // The name of the layout ID.
+                    R.id.list_item_forecast_textview,    // The ID of the textview to populate.
                     result);
 
-            listview.setAdapter(mForecastAdapter);
+            listview.setAdapter(resultAdapter);
         }
 
     }

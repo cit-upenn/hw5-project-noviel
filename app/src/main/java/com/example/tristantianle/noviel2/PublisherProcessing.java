@@ -1,16 +1,13 @@
 package com.example.tristantianle.noviel2;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,29 +16,31 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ZiyuChen on 12/14/15.
+ * This class processes the publisher search in the background
  */
-
 public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = PublisherProcessing.class.getSimpleName();
     private JSONObject bookJson;
-    private ArrayAdapter<String> mForecastAdapter;
-
+    private ArrayAdapter<String> resultAdapter;
     public URL url;
-    private Context myContext;
     private ListView listview;
     public AsyncResponse delegate = null;
 
+    /** Constructor of the class
+     * @param listview from the main thread
+     */
+    public PublisherProcessing(ListView listview){
+        this.listview = listview;
+    }
+
+    /**
+     * get publisher url from background thread
+     * @return the publisher query url
+     */
     public String getURL() {
         Log.d(LOG_TAG, "getURL: " + url);
         return url.toString();
     }
-    public PublisherProcessing(Context context,ListView listview){
-        this.myContext = context;
-        this.listview = listview;
-    }
-
-
 
     private String[] getBookDataFromJson(String titleJsonStr)
             throws JSONException {
@@ -50,8 +49,6 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
         final String RESULTS = "results";
         final String TITLE = "title";
         final String AUTHOR = "author";
-//            final String OWM_MIN = "min";
-//            final String OWM_DESCRIPTION = "main";
 
         bookJson = new JSONObject(titleJsonStr);
         int numResults = bookJson.getInt("num_results");
@@ -69,20 +66,13 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
     }
     @Override
     protected String[] doInBackground(String... params) {
-
-        // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
             return null;
         }
 
-        // These two need to be declared outside the try/catch
-        // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-
-        // Will contain the raw JSON response as a string.
         String titleJsonStr = null;
-
 
         try {
             final String NYTIMES_BASE_URL = "http://api.nytimes.com/svc/books/v2/lists/best-sellers/history.json?";
@@ -97,7 +87,7 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
             url = new URL(builtUri.toString());
 
             // print out the query in debug mode
-            Log.d(LOG_TAG, "url =" + url);
+//            Log.d(LOG_TAG, "url =" + url);
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -115,9 +105,6 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
                 buffer.append(line + "\n");
             }
 
@@ -149,8 +136,6 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-
-        // This will only happen if there was an error getting or parsing the forecast.
         return null;
     }
 
@@ -159,13 +144,13 @@ public class PublisherProcessing extends AsyncTask<String, Void, String[]> {
         delegate.processFinish(result);
 
         if (result != null) {
-            mForecastAdapter = new ArrayAdapter<String>(
-                    SearchList.getContext(), // The current context (this activity)
-                    R.layout.list_item_result, // The name of the layout ID.
-                    R.id.list_item_forecast_textview, // The ID of the textview to populate.
+            resultAdapter = new ArrayAdapter<String>(
+                    SearchList.getContext(),             // The current context (this activity)
+                    R.layout.list_item_result,           // The name of the layout ID.
+                    R.id.list_item_forecast_textview,    // The ID of the textview to populate.
                     result);
 
-            listview.setAdapter(mForecastAdapter);
+            listview.setAdapter(resultAdapter);
         }
 
     }

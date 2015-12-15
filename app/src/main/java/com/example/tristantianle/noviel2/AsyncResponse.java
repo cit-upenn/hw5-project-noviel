@@ -1,7 +1,7 @@
 package com.example.tristantianle.noviel2;
 
 /**
- * Created by TristanTianle on 12/11/2015.
+ * This is a interface to define the recall data from the background thread
  */
 public interface AsyncResponse {
     void processFinish(String[] output);

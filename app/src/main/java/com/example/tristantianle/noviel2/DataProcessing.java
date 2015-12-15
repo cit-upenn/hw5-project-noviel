@@ -1,6 +1,5 @@
 package com.example.tristantianle.noviel2;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -19,29 +18,36 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by TristanTianle on 12/11/2015.
+ * This class processes the book title search in the background
  */
 public class DataProcessing extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = DataProcessing.class.getSimpleName();
     private JSONObject bookJson;
-    private ArrayAdapter<String> mForecastAdapter;
-//    private ArrayList<String> weekForecast= new ArrayList<>();
+    private ArrayAdapter<String> resultAdapter;
     public URL url;
-    private Context myContext;
     private ListView listview;
     public AsyncResponse delegate = null;
 
+    public DataProcessing(ListView listview){
+        this.listview = listview;
+    }
+
+    /**
+     * This method is for the main thread to get the query url
+     * @return nytimse book title query url
+     */
     public String getURL() {
         Log.d(LOG_TAG, "getURL: " + url);
         return url.toString();
     }
-    public DataProcessing(Context context,ListView listview){
-        this.myContext = context;
-        this.listview = listview;
-    }
 
-    private String[] getBookDataFromJson(String titleJsonStr)
-            throws JSONException {
+    /**
+     * This method parse the book info to be displayed
+     * @param titleJsonStr json data from query
+     * @return A string array of the list to be displayed as search result
+     * @throws JSONException
+     */
+    private String[] getBookDataFromJson(String titleJsonStr) throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
         final String RESULTS = "results";
@@ -55,13 +61,15 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
             numResults = 20;
         }
         String[] resultStrs = new String[numResults];
+
+        // build each item in the list
         for (int i=0;i<numResults;i++) {
             resultStrs[i] = bookTitleArray.getJSONObject(i).getString(TITLE) + "\nBy ";
             resultStrs[i] += bookTitleArray.getJSONObject(i).getString(AUTHOR);
         }
         return resultStrs;
-
     }
+
     @Override
     protected String[] doInBackground(String... params) {
 
@@ -70,31 +78,29 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
             return null;
         }
 
-        // These two need to be declared outside the try/catch
-        // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
         String titleJsonStr = null;
 
-
+        //query from the nytimes api with title
         try {
             final String NYTIMES_BASE_URL = "http://api.nytimes.com/svc/books/v2/lists/best-sellers/history.json?";
             final String TITLE_PARAM = "title";
             final String APPKEY_PARAM = "api-key";
-
+            // build up the uri
             Uri builtUri = Uri.parse(NYTIMES_BASE_URL).buildUpon()
                     .appendQueryParameter(TITLE_PARAM, params[0])
                     .appendQueryParameter(APPKEY_PARAM, "de340fc0244bbb1503a07c665b9903dc:15:65808863")
                     .build();
-
+            // change into url
             url = new URL(builtUri.toString());
 
             // print out the query in debug mode
-            Log.d(LOG_TAG, "url =" + url);
+//            Log.d(LOG_TAG, "url =" + url);
 
-            // Create the request to OpenWeatherMap, and open the connection
+            // Create the request to nytimes bset seller api, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -110,9 +116,6 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
                 buffer.append(line + "\n");
             }
 
@@ -138,6 +141,7 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
             }
         }
 
+        //parse the returned json and return the result for postprocessing
         try {
             return getBookDataFromJson(titleJsonStr);
         } catch (JSONException e) {
@@ -153,14 +157,15 @@ public class DataProcessing extends AsyncTask<String, Void, String[]> {
     protected void onPostExecute(String[] result) {
         delegate.processFinish(result);
 
+        // Set the list view as search results
         if (result != null) {
-            mForecastAdapter = new ArrayAdapter<String>(
-                    SearchList.getContext(), // The current context (this activity)
-                    R.layout.list_item_result, // The name of the layout ID.
-                    R.id.list_item_forecast_textview, // The ID of the textview to populate.
+            resultAdapter = new ArrayAdapter<String>(
+                    SearchList.getContext(),                // The current context (this activity)
+                    R.layout.list_item_result,              // The name of the layout ID.
+                    R.id.list_item_forecast_textview,       // The ID of the textview to populate.
                     result);
 
-            listview.setAdapter(mForecastAdapter);
+            listview.setAdapter(resultAdapter);
         }
 
     }
